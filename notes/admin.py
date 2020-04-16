@@ -1,6 +1,5 @@
 from django.contrib import admin
 from .models import Note, Image, Tag
-# Register your models here.
 
 class ImageInline(admin.StackedInline):
     model = Image
@@ -10,7 +9,7 @@ class NoteAdmin(admin.ModelAdmin):
     inlines = [ImageInline]
     fieldsets = [
         
-        ("", {'fields': ['tags','name','desc','upload_time','owner']})
+        ('', {'fields': ['tags','name','desc','upload_time','owner']})
         
     ]
 

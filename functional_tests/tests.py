@@ -9,44 +9,44 @@ from notes.models import Note,Image
 from django.core.files.uploadedfile import SimpleUploadedFile
 
 class NewVisitorTest(LiveServerTestCase):
-    publishTime = ""
+    publishTime = ''
     def setUp(self):
         welcomeNote = Note()
-        welcomeNote.name = "Welcome to Note Space!"
-        welcomeNote.desc = "Introduction and Quick guide"
-        welcomeNote.owner = "Note Space Team"
+        welcomeNote.name = 'Welcome to Note Space!'
+        welcomeNote.desc = 'Introduction and Quick guide'
+        welcomeNote.owner = 'Note Space Team'
         welcomeNote.save()
 
         econNote = Note()
-        econNote.name = "Basic Economics"
-        econNote.subject = "Economics"
-        econNote.desc = "This note is about demands, suplies and how market works."
-        econNote.owner = "Susan"
+        econNote.name = 'Basic Economics'
+        econNote.subject = 'Economics'
+        econNote.desc = 'This note is about demands, suplies and how market works.'
+        econNote.owner = 'Susan'
         publishTime = datetime.datetime.now()
         econNote.save()
 
         img1 = Image()
         img1.index = 1
         img1.note = econNote
-        img1.image = SimpleUploadedFile(name='IMG_0809.JPG', content=open("C:/Users/B/Desktop/NoteSpace/static/TestNotes/Econ/IMG_0809.JPG", 'rb').read(), content_type='image/jpeg') 
+        img1.image = SimpleUploadedFile(name='IMG_0809.JPG', content=open('C:/Users/B/Desktop/NoteSpace/static/TestNotes/Econ/IMG_0809.JPG', 'rb').read(), content_type='image/jpeg') 
         img1.save()
 
         img2 = Image()
         img2.index = 2
         img2.note = econNote
-        img2.image = SimpleUploadedFile(name='IMG_0810.JPG', content=open("C:/Users/B/Desktop/NoteSpace/static/TestNotes/Econ/IMG_0810.JPG", 'rb').read(), content_type='image/jpeg') 
+        img2.image = SimpleUploadedFile(name='IMG_0810.JPG', content=open('C:/Users/B/Desktop/NoteSpace/static/TestNotes/Econ/IMG_0810.JPG', 'rb').read(), content_type='image/jpeg') 
         img2.save()
 
         img3 = Image()
         img3.index = 3
         img3.note = econNote
-        img3.image = SimpleUploadedFile(name='IMG_0811.JPG', content=open("C:/Users/B/Desktop/NoteSpace/static/TestNotes/Econ/IMG_0811.JPG", 'rb').read(), content_type='image/jpeg') 
+        img3.image = SimpleUploadedFile(name='IMG_0811.JPG', content=open('C:/Users/B/Desktop/NoteSpace/static/TestNotes/Econ/IMG_0811.JPG', 'rb').read(), content_type='image/jpeg') 
         img3.save()
 
         img4 = Image()
         img4.index = 4
         img4.note = econNote
-        img4.image = SimpleUploadedFile(name='IMG_0812.JPG', content=open("C:/Users/B/Desktop/NoteSpace/static/TestNotes/Econ/IMG_0812.JPG", 'rb').read(), content_type='image/jpeg') 
+        img4.image = SimpleUploadedFile(name='IMG_0812.JPG', content=open('C:/Users/B/Desktop/NoteSpace/static/TestNotes/Econ/IMG_0812.JPG', 'rb').read(), content_type='image/jpeg') 
         img4.save()
 
         # self.browser = webdriver.Edge()
@@ -74,7 +74,7 @@ class NewVisitorTest(LiveServerTestCase):
         # So she goes to check out its homepage.
         self.browser.get(self.live_server_url)
         self.wait_for_page_update()
-        # She notices the page title is "Note Space"
+        # She notices the page title is 'Note Space'
         self.assertIn('NoteSpace', self.browser.title)
         
 
@@ -84,17 +84,17 @@ class NewVisitorTest(LiveServerTestCase):
         # and then she notices a search field.
         inputbox = self.browser.find_element_by_tag_name('input')
         self.assertEqual(inputbox.get_attribute('placeholder'), 'Search')
-        # She types the keyword "Economics" into a text box 
+        # She types the keyword 'Economics' into a text box 
         inputbox.send_keys('Economics')
         inputbox.send_keys(Keys.ENTER)
-        # When she hits the enter, the page refreshs and the lectures about "Economics" appear.
+        # When she hits the enter, the page refreshs and the lectures about 'Economics' appear.
         self.wait_for_page_update()
         
-        search_results = self.browser.find_elements_by_tag_name("a")
+        search_results = self.browser.find_elements_by_tag_name('a')
         
-        webpage = self.browser.find_element_by_tag_name("body")
-        self.assertIn("searching for 'Economics'", webpage.text)
-        self.assertIn("Basic Economics", [item.text for item in search_results])
+        webpage = self.browser.find_element_by_tag_name('body')
+        self.assertIn('searching for "Economics"', webpage.text)
+        self.assertIn('Basic Economics', [item.text for item in search_results])
         # She notices the filter bar and filters the newest.
 
         
@@ -104,7 +104,7 @@ class NewVisitorTest(LiveServerTestCase):
         
         # She clicks on the thumbnail, the page update then the lecture appears​.
         e = self.browser.find_element_by_partial_link_text('Basic Economics')
-        self.browser.execute_script("arguments[0].click();", e)
+        self.browser.execute_script('arguments[0].click();', e)
         self.wait_for_page_update()
 
         # She notices the lecture note name, owner name, and description.
@@ -125,7 +125,7 @@ class NewVisitorTest(LiveServerTestCase):
         flag10 = False
         flag11 = False
         flag12 = False
-        sources = [img.get_attribute("src")  for img in self.browser.find_elements_by_class_name('note_img')]
+        sources = [img.get_attribute('src')  for img in self.browser.find_elements_by_class_name('note_img')]
         for src in sources:
             if 'IMG_0809' in src:
                 flag9 = True
@@ -152,17 +152,17 @@ class NewVisitorTest(LiveServerTestCase):
 
         
         # She found the upload button.
-        upload_btn = self.browser.find_element_by_id("upload_btn")
+        upload_btn = self.browser.find_element_by_id('upload_btn')
         self.assertTrue(upload_btn)
         # She clicks on the upload button.
         upload_btn.send_keys(Keys.ENTER)
         self.wait_for_page_update()
         # It's bring her to upload the lecture note page.
-        # She notices that title is "Upload the Lecture note".
+        # She notices that title is 'Upload the Lecture note'.
         self.assertIn('Upload the Lecture note', self.browser.title)
         # There is a browse button and all the text fields.
         
-        file_input_button = self.browser.find_element_by_id("file_input")
+        file_input_button = self.browser.find_element_by_id('file_input')
 
         lectureNameTextBox = self.browser.find_element_by_id('LectureName')
         subjectTextBox = self.browser.find_element_by_id('Subject')
@@ -170,10 +170,10 @@ class NewVisitorTest(LiveServerTestCase):
         writerNameTextBox = self.browser.find_element_by_id('WriterName')
         
         # She clicks browse button and upload her note.
-        self.browser.execute_script("arguments[0].style.display = 'block';", file_input_button)
-        file_input_button.send_keys("C:\\Users\\B\\Desktop\\NoteSpace\\static\\TestNotes\\Math\\IMG_0815.JPG")
-        file_input_button.send_keys("C:\\Users\\B\\Desktop\\NoteSpace\\static\\TestNotes\\Math\\IMG_0816.JPG")
-        file_input_button.send_keys("C:\\Users\\B\\Desktop\\NoteSpace\\static\\TestNotes\\Math\\IMG_0817.JPG")
+        self.browser.execute_script('arguments[0].style.display = "block";', file_input_button)
+        file_input_button.send_keys('C:\\Users\\B\\Desktop\\NoteSpace\\static\\TestNotes\\Math\\IMG_0815.JPG')
+        file_input_button.send_keys('C:\\Users\\B\\Desktop\\NoteSpace\\static\\TestNotes\\Math\\IMG_0816.JPG')
+        file_input_button.send_keys('C:\\Users\\B\\Desktop\\NoteSpace\\static\\TestNotes\\Math\\IMG_0817.JPG')
         
         # She fills the name and details into the box and sets the owner's name as Tina.
         lectureNameTextBox.send_keys('Elementary Logic')
@@ -190,11 +190,11 @@ class NewVisitorTest(LiveServerTestCase):
         self.wait_for_page_update()
         
         # She found her note and the first page of her note is a thumbnails.
-        self.assertIn('Elementary Logic', [link.text for link in self.browser.find_elements_by_class_name("card-title")])
+        self.assertIn('Elementary Logic', [link.text for link in self.browser.find_elements_by_class_name('card-title')])
         
         # She check out her note.
         e=self.browser.find_element_by_partial_link_text('Elementary Logic')
-        self.browser.execute_script("arguments[0].click();", e)
+        self.browser.execute_script('arguments[0].click();', e)
         self.wait_for_page_update()
 
         # Then she found that the owner name is her name
@@ -206,7 +206,7 @@ class NewVisitorTest(LiveServerTestCase):
         flag15 = False
         flag16 = False
         flag17 = False
-        sources = [img.get_attribute("src")  for img in self.browser.find_elements_by_class_name('note_img')]
+        sources = [img.get_attribute('src')  for img in self.browser.find_elements_by_class_name('note_img')]
         for src in sources:
             if 'IMG_0815' in src:
                 flag15 = True
