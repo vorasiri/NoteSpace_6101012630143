@@ -9,14 +9,14 @@ from notes.models import Note,Image
 from django.core.files.uploadedfile import SimpleUploadedFile
 
 class NewVisitorTest(LiveServerTestCase):
-    publishTime = ''
-    def setUp(self):
+    publish_time = ''
+    def set_up(self):       
         welcomeNote = Note()
         welcomeNote.name = 'Welcome to Note Space!'
         welcomeNote.desc = 'Introduction and Quick guide'
         welcomeNote.owner = 'Note Space Team'
         welcomeNote.save()
-
+# Create the welcome note
         econNote = Note()
         econNote.name = 'Basic Economics'
         econNote.subject = 'Economics'
@@ -24,35 +24,30 @@ class NewVisitorTest(LiveServerTestCase):
         econNote.owner = 'Susan'
         publishTime = datetime.datetime.now()
         econNote.save()
-
         img1 = Image()
         img1.index = 1
         img1.note = econNote
         img1.image = SimpleUploadedFile(name='IMG_0809.JPG', content=open('C:/Users/B/Desktop/NoteSpace/static/TestNotes/Econ/IMG_0809.JPG', 'rb').read(), content_type='image/jpeg') 
         img1.save()
-
         img2 = Image()
         img2.index = 2
         img2.note = econNote
         img2.image = SimpleUploadedFile(name='IMG_0810.JPG', content=open('C:/Users/B/Desktop/NoteSpace/static/TestNotes/Econ/IMG_0810.JPG', 'rb').read(), content_type='image/jpeg') 
         img2.save()
-
         img3 = Image()
         img3.index = 3
         img3.note = econNote
         img3.image = SimpleUploadedFile(name='IMG_0811.JPG', content=open('C:/Users/B/Desktop/NoteSpace/static/TestNotes/Econ/IMG_0811.JPG', 'rb').read(), content_type='image/jpeg') 
         img3.save()
-
         img4 = Image()
         img4.index = 4
         img4.note = econNote
         img4.image = SimpleUploadedFile(name='IMG_0812.JPG', content=open('C:/Users/B/Desktop/NoteSpace/static/TestNotes/Econ/IMG_0812.JPG', 'rb').read(), content_type='image/jpeg') 
         img4.save()
+# Create an example note with images
+        self.browser = webdriver.Edge()
 
-        # self.browser = webdriver.Edge()
-        self.browser = webdriver.Firefox()
-
-    def tearDown(self):
+    def tear_down(self):
         self.browser.quit()
 
     def wait_for_page_update(self):
@@ -67,6 +62,7 @@ class NewVisitorTest(LiveServerTestCase):
                 if time.time() - start_time > MAX_WAIT:  
                     raise e  
                 time.sleep(0.5) 
+# Count the time waiting for the page response
 
     def test_user_can_checkout_homepage(self):
         # Tina is a Highschool student and tries to find another way to study for her exam. 
@@ -220,7 +216,7 @@ class NewVisitorTest(LiveServerTestCase):
         self.assertTrue(flag16)
         self.assertTrue(flag17)
 
-        # She proud of herself and close the browser.
+        # She's proud of herself and close the browser.
 
     def test_user_can_review(self):
         pass
