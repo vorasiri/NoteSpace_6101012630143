@@ -1,8 +1,7 @@
+import datetime
 from django.db import models
 from django.db.models import Q
 from sorl.thumbnail import ImageField, get_thumbnail
-import sorl.thumbnail
-import datetime
 from notes.field import RatingField
 
 
@@ -79,16 +78,15 @@ class Review(models.Model):
     text = models.TextField(max_length=1000)
 
     def save(self, *args, **kwargs):
-        if(self.score != 0):
+        if self.score != 0:
             self.note.mean_score = (
-                (self.note.mean_score * self.note.review_count) +
-                self.score) /\
-                (self.note.review_count + 1)
+                self.note.mean_score*self.note.review_count
+                + self.score) / (self.note.review_count + 1)
             self.note.review_count += 1
             self.note.save()
         super(Review, self).save(*args, **kwargs)
 
 
 def note_directory_path(instance, filename):
-    return '{0}/{1}'.format(instance.note.id, filename)
     # file will be uploaded to MEDIA_ROOT/<>/<filename>
+    return '{0}/{1}'.format(instance.note.id, filename)
