@@ -14,13 +14,18 @@ class Note(models.Model):
     name = models.CharField(max_length=200)
     owner = models.CharField(max_length=30)
     desc = models.CharField(default='', max_length=1000)
+# Create attribute fields to save note ID, name, owner, description
     upload_time = models.DateTimeField(
         'upload_time',
         null=True,
         default=datetime.datetime.now)
+# Save date and time when publish the note
     tags = models.ManyToManyField(Tag, related_name='notes')
+# Create many-to-many relationship  subject tag to note
+# A note can have more than one tag
     mean_score = models.FloatField(default=0)
     review_count = models.IntegerField(default=0)
+# Create to save score and comments from reader
 
     def __str__(self):
         return self.name
@@ -32,6 +37,7 @@ class Note(models.Model):
             # remember that sorl objects have url/width/height attributes
         except:
             return '/media/loading.jpg'
+# Get the thumbnail from first note image
 
 
 class Image(models.Model):
@@ -41,24 +47,28 @@ class Image(models.Model):
         on_delete=models.CASCADE,
         related_name='images')
     image = ImageField(upload_to=note_directory_path)
-
+# Create relation note images to note with ForeignKey
+# ForeignKey is a many-to-one relation
     def get_thumb(self):
         im = get_thumbnail(self.image, '500x500', crop='center', quality=99)
         return im.url
         # remember that sorl objects have url/width/height attributes
+# Make a thumbnail for note
 
 
 class Tag(models.Model):
     title = models.CharField(max_length=250)
-    slug = models.SlugField(blank=True, null=True)
+    slug = models.SlugField(blank=True, null=True) 
 
     class Meta:
         verbose_name = 'tag'
         verbose_name_plural = 'tags'
         ordering = ['title']
+# An inner class change singular or plural versions of the tag name
 
     def get_absolute_url(self):
         return '/tags/%s/' % self.slug
+# A slug is a short label for tag in URL
 
     def __str__(self):
         return self.title
@@ -69,6 +79,8 @@ class Review(models.Model):
         Note,
         on_delete=models.CASCADE,
         related_name='reviews')
+# Create relation note review to note with ForeignKey
+# ForeignKey is a many-to-one relation
     author = models.CharField(max_length=30)
     datetime = models.DateTimeField(
         'reviewed_time',
@@ -76,7 +88,7 @@ class Review(models.Model):
         default=datetime.datetime.now)
     score = models.FloatField(default=0)
     text = models.TextField(max_length=1000)
-
+# Create attribute fields to save note ID, author name, review date and time, review score and text comment
     def save(self, *args, **kwargs):
         if self.score != 0:
             self.note.mean_score = (
@@ -85,8 +97,10 @@ class Review(models.Model):
             self.note.review_count += 1
             self.note.save()
         super(Review, self).save(*args, **kwargs)
+# Update mean score to recently added review
 
 
 def note_directory_path(instance, filename):
     # file will be uploaded to MEDIA_ROOT/<>/<filename>
     return '{0}/{1}'.format(instance.note.id, filename)
+# Set note path to upload note file
