@@ -26,7 +26,7 @@ class Tag(models.Model):
 def note_directory_path(instance, filename):
     # file will be uploaded to MEDIA_ROOT/<>/<filename>
     return '{0}/{1}'.format(instance.note.id, filename)
-
+# Set note path to upload note file 
 
 class Note(models.Model):
     id = models.AutoField(
@@ -84,6 +84,8 @@ class Review(models.Model):
         Note,
         on_delete=models.CASCADE,
         related_name='reviews')
+# Create relation note review to note with ForeignKey	
+# ForeignKey is a many-to-one relation
     author = models.CharField(max_length=30)
     datetime = models.DateTimeField(
         'reviewed_time',
@@ -91,7 +93,7 @@ class Review(models.Model):
         default=datetime.datetime.now)
     score = models.FloatField(default=0)
     text = models.TextField(max_length=1000)
-
+# Create attribute fields to save note ID, author name, review date and time, review score and text comment
     def save(self, *args, **kwargs):
         if self.score != 0:
             self.note.mean_score = (
@@ -100,3 +102,4 @@ class Review(models.Model):
             self.note.review_count += 1
             self.note.save()
         super(Review, self).save(*args, **kwargs)
+# Update mean score to recently added review
