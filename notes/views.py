@@ -102,8 +102,10 @@ def addcomment_api(request):
 # Get the current note id
     author = request.POST['author']
     text = request.POST['text']
-    score = float(request.POST['score'])
-    if request.POST['score'] in ['1', '2', '3', '4', '5'] else 0
+    score = float(
+        request.POST['score']
+        ) if request.POST['score'] in [
+            '1', '2', '3', '4', '5'] else 0
     review = Review()
     review.note = n
     review.author = author
