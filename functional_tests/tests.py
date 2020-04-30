@@ -1,8 +1,8 @@
+import time
+import datetime
 from django.test import LiveServerTestCase, Client
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
-import time
-import datetime
 from selenium.common.exceptions import WebDriverException
 from notes.models import Note, Image
 from django.core.files.uploadedfile import SimpleUploadedFile

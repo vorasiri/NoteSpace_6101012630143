@@ -7,7 +7,7 @@ from notes.field import RatingField
 
 class Tag(models.Model):
     title = models.CharField(max_length=250)
-    slug = models.SlugField(blank=True, null=True) 
+    slug = models.SlugField(blank=True, null=True)
 
     class Meta:
         verbose_name = 'tag'
@@ -26,7 +26,8 @@ class Tag(models.Model):
 def note_directory_path(instance, filename):
     # file will be uploaded to MEDIA_ROOT/<>/<filename>
     return '{0}/{1}'.format(instance.note.id, filename)
-# Set note path to upload note file 
+# Set note path to upload note file
+
 
 class Note(models.Model):
     id = models.AutoField(
@@ -72,6 +73,7 @@ class Image(models.Model):
     image = ImageField(upload_to=note_directory_path)
 # Create relation note images to note with ForeignKey
 # ForeignKey is a many-to-one relation
+
     def get_thumb(self):
         im = get_thumbnail(self.image, '500x500', crop='center', quality=99)
         return im.url
@@ -84,7 +86,7 @@ class Review(models.Model):
         Note,
         on_delete=models.CASCADE,
         related_name='reviews')
-# Create relation note review to note with ForeignKey	
+# Create relation note review to note with ForeignKey 
 # ForeignKey is a many-to-one relation
     author = models.CharField(max_length=30)
     datetime = models.DateTimeField(
@@ -93,7 +95,9 @@ class Review(models.Model):
         default=datetime.datetime.now)
     score = models.FloatField(default=0)
     text = models.TextField(max_length=1000)
-# Create attribute fields to save note ID, author name, review date and time, review score and text comment
+# Create attribute fields to save note ID, author name,
+# review date and time, review score and text comment
+
     def save(self, *args, **kwargs):
         if self.score != 0:
             self.note.mean_score = (
