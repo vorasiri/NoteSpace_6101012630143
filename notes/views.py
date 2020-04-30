@@ -47,16 +47,55 @@ def upload_api(request):
             newnote.delete()
             return HttpResponse('File Type Error')
 # Return 'File Type Error' if none of these files aren't Image File
+        if not request.COOKIES.get('owner_cookie'):
+            response = HttpResponseRedirect('/')
+            response.set_cookie('owner_cookie', str(newnote.id))
+            return response
+        else:
+            response = HttpResponseRedirect('/')
+            cookie_value = request.COOKIES['owner_cookie']
+            response.set_cookie(
+                'owner_cookie', str(cookie_value)+'//'+str(newnote.id))
+            return response
+# Set a cookie when publish a note
         return HttpResponseRedirect('/')
     return HttpResponseRedirect('/')
+
+
+def delete(request, note_id):
+    n = get_object_or_404(Note, pk=note_id)
+    if request.method == 'POST':
+        n.delete()
+    return HttpResponseRedirect('/')
+# Delete a note
 
 
 def detail(request, note_index):
     n = get_object_or_404(Note, pk=note_index)
     images = Image.objects.filter(note=n)
     img_url = [i.image.url for i in images]
-    return render(request, 'detail.html', {'images_url': img_url, 'note': n})
 # Render detail page with all note images
+    owner_note = []
+    if request.COOKIES.get('owner_cookie'):
+        cookie_value = request.COOKIES['owner_cookie']
+        str_id = str(n.id)
+        delete_btn = False
+        if '//' in cookie_value:
+            owner_note += cookie_value.split('//')
+            for id in owner_note:
+                if id == str_id:
+                    delete_btn = True
+        else:
+            if cookie_value == str_id:
+                delete_btn = True
+    else:
+        delete_btn = False
+    return render(request, 'detail.html', {
+        'delete_btn': delete_btn,
+        'images_url': img_url,
+        'note': n})
+# Check cookies and Set delete button status
+# if user is an owner, the button will be enabled
 
 
 def about(request):

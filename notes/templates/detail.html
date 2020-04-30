@@ -95,104 +95,119 @@
     }
   }
 </style>
-<div id="note">
-  <h1 style="text-decoration: none;">{{note.name}}</h1>
-  <span class="date">Published {{note.upload_time}}</span>
-  &nbsp;
-  <span class="owner">By {{note.owner}}</span>
-  <br/>
-  Tag:
-  <span class="tags">
-    {% for tag in note.tags.all %}
-        <a href="{% url 'tagQuery' tag.title %}">{{ tag.title }}</a>
-    {% endfor %}
-  </span>
-  <div class="slideshow-container">
 
-    {% for i in images_url %}
-      <div class="mySlides">
-        <img class="center-fit note_img" src="{{ i }}"></a>
+<div class="container-fluid">
+  <div id="note">
+    <div class="row justify-content-center">
+      <div class="col-md-8">
+        <h1 style="text-decoration: none;">{{note.name}}</h1>
+        <span class="date">Published {{note.upload_time}}</span>
+        &nbsp;
+        <span class="owner">By {{note.owner}}</span>
+        <br/>
+        Tag:
+        <span class="tags">
+          {% for tag in note.tags.all %}
+              <a href="{% url 'tag_query' tag.title %}">{{ tag.title }}</a>
+          {% endfor %}
+        </span>
       </div>
-    {% endfor %}
-    <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
-    <a class="next" onclick="plusSlides(1)">&#10095;</a>
-  </div>
-  <div style="text-align:center">
-    {% for i in images_url %}
-    <span class="dot" onclick="currentSlide({{ forloop.counter }})"></span>
-    {% endfor%}
-  </div>
-  {% if note.desc %}
-    <p>{{note.desc}}</p>
-  {% endif %}
+      <div class="col-md-2">
+        <form action="{% url 'delete' note.id %}" method="POST" >
+          {% csrf_token %}
+          {% if delete_btn %}
+            <button type="submit" class="btn btn-primary mb-2" id="btnDelete">Delete</button>
+          {% else %}
+            <button type="submit" class="btn btn-primary mb-2" id="btnDelete" disabled>Delete</button>
+          {% endif %}
+        </form>
+      </div>
+    </div>
+    <div class="slideshow-container">
+      {% for i in images_url %}
+        <div class="mySlides">
+          <img class="center-fit note_img" src="{{ i }}"></a>
+        </div>
+      {% endfor %}
+      <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+      <a class="next" onclick="plusSlides(1)">&#10095;</a>
+    </div>
+    <div style="text-align:center">
+      {% for i in images_url %}
+      <span class="dot" onclick="currentSlide({{ forloop.counter }})"></span>
+      {% endfor%}
+    </div>
+    {% if note.desc %}
+      <p>{{note.desc}}</p>
+    {% endif %}
 
+    <script>
+      var slideIndex = 1;
+      showSlides(slideIndex);
 
-
-  <script>
-    var slideIndex = 1;
-    showSlides(slideIndex);
-
-    function plusSlides(n) {
-      showSlides(slideIndex += n);
-    }
-
-    function currentSlide(n) {
-      showSlides(slideIndex = n);
-    }
-
-    function showSlides(n) {
-      var i;
-      var slides = document.getElementsByClassName("mySlides");
-      var dots = document.getElementsByClassName("dot");
-      if (n > slides.length) { slideIndex = 1 }
-      if (n < 1) { slideIndex = slides.length }
-      for (i = 0; i < slides.length; i++) {
-        slides[i].style.display = "none";
+      function plusSlides(n) {
+        showSlides(slideIndex += n);
       }
-      for (i = 0; i < dots.length; i++) {
-        dots[i].className = dots[i].className.replace(" active", "");
+
+      function currentSlide(n) {
+        showSlides(slideIndex = n);
       }
-      slides[slideIndex - 1].style.display = "block";
-      dots[slideIndex - 1].className += " active";
-    }
-  </script>
+
+      function showSlides(n) {
+        var i;
+        var slides = document.getElementsByClassName("mySlides");
+        var dots = document.getElementsByClassName("dot");
+        if (n > slides.length) { slideIndex = 1 }
+        if (n < 1) { slideIndex = slides.length }
+        for (i = 0; i < slides.length; i++) {
+          slides[i].style.display = "none";
+        }
+        for (i = 0; i < dots.length; i++) {
+          dots[i].className = dots[i].className.replace(" active", "");
+        }
+        slides[slideIndex - 1].style.display = "block";
+        dots[slideIndex - 1].className += " active";
+      }
+    </script>
+  </div>
+
+    <div id="reviews">
+      <h3>Reviews</h3>
+      {% for review in note.reviews.all %}
+        {% if review.author %}
+          <p>{{review.author}}</p>
+        {% else %}
+          <p>anonymous</p>
+        {% endif %}
+        <p>score:{{review.score}}</p>
+        <p>{{ review.text }}</p>
+        <br>
+      {% endfor %}
+    </div>
+    <p>---------------------------------------------------------------------</p>
+    <div id="new_review">
+      <form action="{% url 'addcomment_api'%}" method="post" id="addcomment_form">
+        {% csrf_token %}
+        <input name="note_id" value="{{note.id}}" hidden>
+
+        <input type="radio" id="star5" name="score" value="5" >
+        <label for="star5">5</label>
+        <input type="radio" id="star4" name="score" value="4">
+        <label for="star4">4</label>
+        <input type="radio" id="star3" name="score" value="3">
+        <label for="star3">3</label>
+        <input type="radio" id="star2" name="score" value="2">
+        <label for="star2">2</label>
+        <input type="radio" id="star1" name="score" value="1">
+        <label for="star1">1</label>
+        <br>
+        <label for="author_name">Author:</label>
+        <input type="text" id="author_name" name="author"><br><br>
+        <label for="text">Text:</label>
+        <textarea form="addcomment_form" id="text" rows="4" cols="50" name="text"></textarea><br><br>
+        <input type="submit">
+      </form>
+    </div>
+
+  {% endblock context %}
 </div>
-<div id="reviews">
-    <h3>Reviews</h3>
-    {% for review in note.reviews.all %}
-      {% if review.author %}
-        <p>{{review.author}}</p>
-      {% else %}
-        <p>anonymous</p>
-      {% endif %}
-      <p>score:{{review.score}}</p>
-      <p>{{ review.text }}</p>
-      <br>
-    {% endfor %}
-  </div>
-  <p>---------------------------------------------------------------------</p>
-  <div id="new_review">
-    <form action="{% url 'addcomment_api'%}" method="post" id="addcomment_form">
-      {% csrf_token %}
-      <input name="note_id" value="{{note.id}}" hidden>
-
-      <input type="radio" id="star5" name="score" value="5" >
-      <label for="star5">5</label>
-      <input type="radio" id="star4" name="score" value="4">
-      <label for="star4">4</label>
-      <input type="radio" id="star3" name="score" value="3">
-      <label for="star3">3</label>
-      <input type="radio" id="star2" name="score" value="2">
-      <label for="star2">2</label>
-      <input type="radio" id="star1" name="score" value="1">
-      <label for="star1">1</label>
-      <br>
-      <label for="author_name">Author:</label>
-      <input type="text" id="author_name" name="author"><br><br>
-      <label for="text">Text:</label>
-      <textarea form="addcomment_form" id="text" rows="4" cols="50" name="text"></textarea><br><br>
-      <input type="submit">
-    </form>
-  </div>
-
-{% endblock context %}
