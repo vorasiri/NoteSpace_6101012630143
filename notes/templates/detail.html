@@ -116,9 +116,9 @@
         <form action="{% url 'delete' note.id %}" method="POST" >
           {% csrf_token %}
           {% if delete_btn %}
-            <button type="submit" class="btn btn-primary mb-2" id="btnDelete">Delete</button>
+            <button type="submit" class="btn btn-danger mb-2" id="btnDelete">Delete</button>
           {% else %}
-            <button type="submit" class="btn btn-primary mb-2" id="btnDelete" disabled>Delete</button>
+            <button type="submit" class="btn btn-danger mb-2" id="btnDelete" disabled>Delete</button>
           {% endif %}
         </form>
       </div>
