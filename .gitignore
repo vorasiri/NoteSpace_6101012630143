@@ -1,4 +1,5 @@
 virtualenv
+db.sqlite3
 *.pyc
 geckodriver.log
 .vscode
