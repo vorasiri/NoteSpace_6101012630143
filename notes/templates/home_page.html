@@ -1,18 +1,26 @@
 {% extends "base.html" %}
 {% block context %}
 <div id="main">
-    {% for note in notes %}
-    <div class="card" style="width: 18rem;">
-        
-        <a href="/notes/{{ note.id }}"><img class="card-img-top" src="{{ note.get_thumb }}" ></img></a>
-        <div class="card-body">
-            <a href="/notes/{{note.id }}"><h5 class="card-title">{{note.name}}</h5></a>
-            <p class="card-text" style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;max-width: 300px;">{{note.desc}}</p>
-        </div>
-        
-    </div>
-    
-    <br/>    
-    {% endfor %}
+    <div class="container-fluid" style="padding-top: 1%; padding-left: 10%; padding-right: 10%">
+        {% for notes_in_row in notes %}
+            <div class="row">
+                {% for note in notes_in_row %}
+                    <div class="col-sm-3">
+                        <div class="card">
+                            <a href="/notes/{{ note.id }}"><img class="card-img-top" src="{{ note.get_thumb }}"></img></a>
+                            <div class="card-body">
+                                <a href="/notes/{{note.id }}"><h5 class="card-title">{{note.name}}</h5></a>
+                                <p class="card-text" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 300px;">{{note.desc}}</p>
+                            </div>
+                            <div class="card-footer text-muted">
+                                <span class="card-text" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 300px; font-size:8pt">By {{note.owner}}</span>
+                                <span class="card-text" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 300px; font-size:8pt">Published on {{note.upload_time}}</span>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>  
+        {% endfor %}
+   </div> 
 </div>
 {% endblock context %}

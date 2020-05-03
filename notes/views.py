@@ -13,7 +13,17 @@ def clear_string_space(input):
 
 
 def home_page(request):
-    notes = Note.objects.order_by('-upload_time')
+    notes_list = list(Note.objects.all())
+    notes = []
+    a_row_notes = []
+    for note in notes_list:
+        a_row_notes.append(note)
+        note_index = notes_list.index(note) + 1
+        if note_index % 4 == 0:
+            notes.append(a_row_notes)
+            a_row_notes = []
+    if a_row_notes != []:
+        notes.append(a_row_notes)
     return render(request, 'home_page.html', {'notes': notes})
 # Render home page with all notes
 
@@ -79,19 +89,19 @@ def detail(request, note_index):
     if request.COOKIES.get('owner_cookie'):
         cookie_value = request.COOKIES['owner_cookie']
         str_id = str(n.id)
-        delete_btn = False
+        is_owner = False
         if '//' in cookie_value:
             owner_note += cookie_value.split('//')
             for id in owner_note:
                 if id == str_id:
-                    delete_btn = True
+                    is_owner = True
         else:
             if cookie_value == str_id:
-                delete_btn = True
+                is_owner = True
     else:
-        delete_btn = False
+        is_owner = False
     return render(request, 'detail.html', {
-        'delete_btn': delete_btn,
+        'is_owner': is_owner,
         'images_url': img_url,
         'note': n})
 # Check cookies and Set delete button status
@@ -124,7 +134,7 @@ def search(request):
         Q(desc__icontains=query_word) |
         Q(tags__title__icontains=query_word))
     return render(request, 'search_result.html', {
-            'search_key': query_word,
+        'search_key': query_word,
             'searched_notes': searched_notes})
 # Searching by name, description, and tag
 
@@ -143,7 +153,7 @@ def addcomment_api(request):
     text = request.POST['text']
     score = float(
         request.POST['score']
-        ) if request.POST['score'] in [
+    ) if request.POST['score'] in [
             '1', '2', '3', '4', '5'] else 0
     review = Review()
     review.note = n
