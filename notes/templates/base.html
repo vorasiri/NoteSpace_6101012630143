@@ -15,8 +15,8 @@
 
     
     <!-- Nav Bar -->
-    <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm container-fluid" >
-        <div class="my-0 mr-md-auto font-weight-large ";>
+    <div class="d-flex align-items-center p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm container-fluid" >
+        <div class="col-md-3";>
             <h5>
                 <a href="{% url 'home_page'%}" style="text-decoration: none">
                     <img border="0" alt="NoteSpace" src="{% static '/logo/NoteSpace_Logo-Name.png' %}" height="50px">
@@ -24,7 +24,7 @@
             </h5>
 
         </div>  
-        <div class="my-0 mr-md-5 ml-md-5 col-md-6 " >
+        <div class="col-md-6 " >
             <form class="form-inline mr-md-auto ml-md-auto " action="{% url 'search' %}" method="GET">
                         <input id="searchbox" type="text" class="form-control col-md-10" placeholder="Search" name="q" aria-describedby="basic-addon2" required>
                         <div class="input-group-append ">
@@ -40,7 +40,7 @@
             </div>
         </div>
         
-        <nav class="col-md-1 align-items-right align-middle  text-center">
+        <nav class="col-md-2 align-items-right align-middle  text-center">
             <a id="upload_btn" class="btn btn-outline-primary"  href="{% url 'upload_page' %}">Upload</a>
         </nav>
 

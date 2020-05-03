@@ -24,7 +24,7 @@
   }
 
   .center-fit {
-    max-width: 100%;
+    max-width: 50%;
     max-height: 100vh;
     margin: auto;
   }
@@ -115,7 +115,7 @@
       <div class="col-md-2">
         <form action="{% url 'delete' note.id %}" method="POST" >
           {% csrf_token %}
-          {% if delete_btn %}
+          {% if is_owner %}
             <button type="submit" class="btn btn-danger mb-2" id="btnDelete">Delete</button>
           {% else %}
             <button type="submit" class="btn btn-danger mb-2" id="btnDelete" disabled>Delete</button>

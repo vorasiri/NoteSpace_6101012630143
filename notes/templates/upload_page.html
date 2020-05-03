@@ -38,12 +38,12 @@
         </nav>
     </div>
 
-    <div class="container-fluid">
+    <div class="container-fluid w-75">
         <form action="{% url 'api_upload' %}" method="POST" enctype="multipart/form-data" >
             {% csrf_token %}
             <div class="row justify-content-end">
                 <div class="col-md-2"> <!-- Publish Button -->
-                    <button type="submit" class="btn btn-primary mb-2" id="btnPublish">Publish</button>
+                    <button type="submit" class="btn btn-primary mb-2" id="btnPublish" style="font-size: 12pt">Publish</button>
                 </div>
             </div>
             <div class="row">
@@ -56,7 +56,7 @@
                     <div class="md-form" action="#">
                             <div id="file_field" class="file-field">
                                 <input id="file_input" type="file" accept="image/*" style="display: none;" onchange="upload_img_multiple(this)" name="myfile" multiple>   
-                                <input id="dummy_file_input_btn" type="button" class="btn btn-primary btn-sm float-left" value="Browse..." onclick="document.getElementById('file_input').click();" />
+                                <input id="dummy_file_input_btn" type="button" class="btn btn-primary btn-sm float-left" style="font-size: 12pt; width: 50%;" value="Browse..." onclick="document.getElementById('file_input').click();" />
                             </div>
                     </div>
                     
