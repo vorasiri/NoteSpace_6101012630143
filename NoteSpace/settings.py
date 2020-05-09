@@ -54,7 +54,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'notes.urls'
+ROOT_URLCONF = 'NoteSpace.urls'
 
 TEMPLATES = [
     {
